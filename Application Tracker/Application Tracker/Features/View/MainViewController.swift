@@ -10,11 +10,14 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
-    private let interviewButton = UIButton()
+    private let interviewButton: UIButton = UIButton()
     private let rejectButton: UIButton = UIButton()
     private let addButton: UIButton = UIButton()
     private let secondView: UIView = UIView()
     private let label: UILabel = UILabel()
+    private let tableView: UITableView = UITableView()
+    let addVC = AddViewController()
+    var interviewCounter: Int = Int()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +32,7 @@ class MainViewController: UIViewController {
         makeAddButton()
         makeSecondView()
         makeLabel()
+        makeTableView()
     }
     
     func addSubviews() {
@@ -37,15 +41,22 @@ class MainViewController: UIViewController {
         view.addSubview(interviewButton)
         view.addSubview(rejectButton)
         view.addSubview(addButton)
+        view.addSubview(tableView)
     }
 
     func drawDesign() {
+        interviewCounter = 0
         view.backgroundColor = .systemGray6
         secondView.backgroundColor = .systemGray5
         secondView.layer.cornerRadius = 30
-        label.text = "Application Tracker"
+        tableView.backgroundColor = .systemGray5
+        tableView.separatorColor = .systemGray5
+        tableView.reloadData()
+        tableView.delegate = self
+        tableView.dataSource = self
+        label.text = "Interview Tracker"
         label.font = .systemFont(ofSize: 40)
-        interviewButton.setTitle("1", for: .normal)
+        interviewButton.setTitle("\(interviewCounter)", for: .normal)
         interviewButton.backgroundColor = .systemGreen
         interviewButton.layer.cornerRadius = 20
         interviewButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 55)
@@ -57,7 +68,13 @@ class MainViewController: UIViewController {
         addButton.backgroundColor = .systemBlue
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addButton.tintColor = .white
+        addButton.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
     }
+    
+    @objc func addButtonClicked(sender: UIButton!) {
+        present(addVC, animated: true, completion: nil)
+    }
+    
 }
 
 
@@ -103,4 +120,39 @@ extension MainViewController {
             make.bottom.equalTo(interviewButton.snp.top)
         }
     }
+    
+    private func makeTableView() {
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(interviewButton.snp.bottom).offset(20)
+            make.left.equalTo(interviewButton)
+            make.right.equalTo(rejectButton)
+            make.bottom.equalTo(addButton.snp.top)
+        }
+    }
+}
+
+// Useless
+extension MainViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(addNewData), name: NSNotification.Name("NewData"), object: nil)
+    }
+    
+    @objc func addNewData() {
+        interviewCounter += 1
+    }
+}
+
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = "Test"
+        cell.backgroundColor = .systemGray5
+        return cell
+    }
+    
+    
 }
