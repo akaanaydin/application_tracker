@@ -29,9 +29,9 @@ class MainViewController: UIViewController {
     let addVC = AddViewController()
     var interviewCounter: Int = Int()
     var rejectCounter: Int = Int()
-
-//    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
-
+    
+    //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -57,7 +57,7 @@ class MainViewController: UIViewController {
         view.addSubview(addButton)
         view.addSubview(tableView)
     }
-
+    
     func drawDesign() {
         view.backgroundColor = .systemGray6
         secondView.backgroundColor = .systemGray5
@@ -92,7 +92,7 @@ class MainViewController: UIViewController {
         present(addVC, animated: true, completion: nil)
     }
     
-//    VIEW MODELE TASINACAK
+    //    VIEW MODELE TASINACAK
     @objc func fetchDatas() {
         idArray.removeAll(keepingCapacity: true)
         companyArray.removeAll(keepingCapacity: true)
@@ -103,58 +103,58 @@ class MainViewController: UIViewController {
         notesArray.removeAll(keepingCapacity: true)
         rejectCountArray.removeAll(keepingCapacity: true)
         
-
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-                let context = appDelegate.persistentContainer.viewContext
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
-                fetchRequest.returnsObjectsAsFaults = false
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
+        fetchRequest.returnsObjectsAsFaults = false
+        
+        do {
+            
+            let results = try context.fetch(fetchRequest)
+            for result in results as! [NSManagedObject] {
                 
-                do {
-                    
-                    let results = try context.fetch(fetchRequest)
-                    for result in results as! [NSManagedObject] {
-                        
-                        if let rejectCount = result.value(forKey: "rejectCounter") as? String {
-                            rejectCountArray.append(rejectCount)
-                            rejectButton.setTitle("\(rejectCountArray.count)", for: .normal)
-                        }
-                        
-                        if let id = result.value(forKey: "id") as? UUID {
-                            idArray.append(id)
-                            interviewButton.setTitle("\(idArray.count)", for: .normal)
-                        }
-                        if let companyName = result.value(forKey: "companyName") as? String {
-                            companyArray.append(companyName)
-                        }
-                        
-                        if let jobTitle = result.value(forKey: "jobTitle") as? String {
-                            jobTitleArray.append(jobTitle)
-                        }
-                        
-                        if let jobType = result.value(forKey: "jobType") as? String {
-                            jobTypeArray.append(jobType)
-                        }
-                        
-                        if let location = result.value(forKey: "location") as? String {
-                            locationArray.append(location)
-                        }
-                        
-                        if let date = result.value(forKey: "date") as? Date {
-                            dateArray.append(date)
-                        }
-                        
-                        if let notes = result.value(forKey: "notes") as? String {
-                            notesArray.append(notes)
-                        }
-                       
-                        tableView.reloadData()
-                    }
-                }catch {
-                    print(error)
+                if let rejectCount = result.value(forKey: "rejectCounter") as? String {
+                    rejectCountArray.append(rejectCount)
+                    rejectButton.setTitle("\(rejectCountArray.count)", for: .normal)
                 }
                 
+                if let id = result.value(forKey: "id") as? UUID {
+                    idArray.append(id)
+                    interviewButton.setTitle("\(idArray.count)", for: .normal)
+                }
+                if let companyName = result.value(forKey: "companyName") as? String {
+                    companyArray.append(companyName)
+                }
+                
+                if let jobTitle = result.value(forKey: "jobTitle") as? String {
+                    jobTitleArray.append(jobTitle)
+                }
+                
+                if let jobType = result.value(forKey: "jobType") as? String {
+                    jobTypeArray.append(jobType)
+                }
+                
+                if let location = result.value(forKey: "location") as? String {
+                    locationArray.append(location)
+                }
+                
+                if let date = result.value(forKey: "date") as? Date {
+                    dateArray.append(date)
+                }
+                
+                if let notes = result.value(forKey: "notes") as? String {
+                    notesArray.append(notes)
+                }
+                
+                tableView.reloadData()
+            }
+        }catch {
+            print(error)
+        }
+        
     }
-//
+    //
     
 }
 
@@ -223,7 +223,7 @@ extension MainViewController {
         print(locationArray)
         print(dateArray)
         print(notesArray)
-
+        
     }
 }
 
@@ -239,46 +239,46 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-//    VIEW MODELE TASINACAK
+    //    VIEW MODELE TASINACAK
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            let context = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
-            let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
-            let idString = idArray[indexPath.row].uuidString
-            fetchRequest.predicate = NSPredicate(format: "id = %@", idString)
-            fetchRequest.returnsObjectsAsFaults = false
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
+        let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
+        let idString = idArray[indexPath.row].uuidString
+        fetchRequest.predicate = NSPredicate(format: "id = %@", idString)
+        fetchRequest.returnsObjectsAsFaults = false
         
-            saveData.setValue("1", forKey: "rejectCounter")
-
-            do {
-                let results = try context.fetch(fetchRequest)
-                for result in results as! [NSManagedObject] {
-                    if let _ = result.value(forKey: "id") as? UUID {
-                        context.delete(result)
-                        idArray.remove(at: indexPath.row)
-                        interviewButton.setTitle("\(idArray.count)", for: .normal)
-                        companyArray.remove(at: indexPath.row)
-                        locationArray.remove(at: indexPath.row)
-                        jobTypeArray.remove(at: indexPath.row)
-                        jobTitleArray.remove(at: indexPath.row)
-                        dateArray.remove(at: indexPath.row)
-                        notesArray.remove(at: indexPath.row)
-                        tableView.reloadData()
-                        do {
-                            try context.save()
-                            fetchDatas()
-                        }catch {
-                            print(error)
-                        }
+        saveData.setValue("1", forKey: "rejectCounter")
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            for result in results as! [NSManagedObject] {
+                if let _ = result.value(forKey: "id") as? UUID {
+                    context.delete(result)
+                    idArray.remove(at: indexPath.row)
+                    interviewButton.setTitle("\(idArray.count)", for: .normal)
+                    companyArray.remove(at: indexPath.row)
+                    locationArray.remove(at: indexPath.row)
+                    jobTypeArray.remove(at: indexPath.row)
+                    jobTitleArray.remove(at: indexPath.row)
+                    dateArray.remove(at: indexPath.row)
+                    notesArray.remove(at: indexPath.row)
+                    tableView.reloadData()
+                    do {
+                        try context.save()
+                        fetchDatas()
+                    }catch {
+                        print(error)
                     }
                 }
-            }catch {
-                print(error)
             }
+        }catch {
+            print(error)
         }
-//
+    }
+    //
     
     
 }
