@@ -6,26 +6,32 @@
 //
 
 import UIKit
+import CoreData
+import SnapKit
 
 class AddViewController: UIViewController {
     
-    private let companyName: UITextField = UITextField()
+//    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
+    let companyName: UITextField = UITextField()
     private let labelCompany: UILabel = UILabel()
-    private let jobTitle: UITextField = UITextField()
+    let jobTitle: UITextField = UITextField()
     private let labelJobTitle: UILabel = UILabel()
-    private let location: UITextField = UITextField()
+    let location: UITextField = UITextField()
     private let labelLocation: UILabel = UILabel()
-    private let jobType: UITextField = UITextField()
+    let jobType: UITextField = UITextField()
     private let labelJobType: UILabel = UILabel()
-    private let notes: UITextView = UITextView()
+    let notes: UITextView = UITextView()
     private let labelNotes: UILabel = UILabel()
-    private let interviewDate: UIDatePicker = UIDatePicker()
+    let interviewDate: UIDatePicker = UIDatePicker()
     private let labelInterviewDate: UILabel = UILabel()
     private let saveButton: UIButton = UIButton()
+    var interviewCounter: Int = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
     }
     
     func configure() {
@@ -94,7 +100,35 @@ class AddViewController: UIViewController {
     }
     
     @objc func saveButtonClicked(sender: UIButton) {
+//        VIEW MODELE TASINACAK
+              let appDelegate = UIApplication.shared.delegate as! AppDelegate
+              let context = appDelegate.persistentContainer.viewContext
+              let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
+              
+        
+                saveData.setValue(UUID(), forKey: "id")
+                saveData.setValue(companyName.text!, forKey: "companyName")
+                saveData.setValue(jobTitle.text!, forKey: "jobTitle")
+                saveData.setValue(location.text!, forKey: "location")
+                saveData.setValue(jobType.text!, forKey: "jobType")
+                saveData.setValue(notes.text!, forKey: "notes")
+                saveData.setValue(interviewDate.date, forKey: "date")
+        
+            
+              do {
+                  try context.save()
+                  print("Success")
+              }catch {
+                  print(error)
+              }
+//
         NotificationCenter.default.post(name: .init(rawValue: "NewData"), object: nil)
+        companyName.text = ""
+        jobTitle.text = ""
+        location.text = ""
+        jobType.text = ""
+        notes.text = ""
+        self.dismiss(animated: true, completion: nil)
     }
 
 }
