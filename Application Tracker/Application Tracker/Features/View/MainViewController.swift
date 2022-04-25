@@ -120,8 +120,9 @@ class MainViewController: UIViewController {
         present(addVC, animated: true, completion: nil)
     }
     
-    // CORE DATA FETCH DATAS    VIEW MODELE TASINACAK
+    // MARK: CORE DATA FETCH DATAS    VIEW MODELE TASINACAK
     @objc func fetchDatas() {
+        // DELETE DUPLICATE DATAS
         idArray.removeAll(keepingCapacity: true)
         companyArray.removeAll(keepingCapacity: true)
         jobTitleArray.removeAll(keepingCapacity: true)
@@ -131,12 +132,13 @@ class MainViewController: UIViewController {
         notesArray.removeAll(keepingCapacity: true)
         rejectCountArray.removeAll(keepingCapacity: true)
         
-        
+        // FETCH DATAS
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
         fetchRequest.returnsObjectsAsFaults = false
         
+        // DATAS APPEND TO RELATED ARRAY
         do {
             
             let results = try context.fetch(fetchRequest)
@@ -179,11 +181,8 @@ class MainViewController: UIViewController {
             }
         }catch {
             print(error)
-        }
-        
+        }       
     }
-    //
-    
 }
 
 // MARK: EXTENSIONS
@@ -307,9 +306,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         }catch {
             print(error)
         }
-    }
-    //
-    
-    
+    }    
 }
 
