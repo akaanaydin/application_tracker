@@ -35,9 +35,6 @@ class MainViewController: UIViewController {
     // MARK: - VIEW CONTROLLERS
     let addVC = AddViewController()
     
-    
-    //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
-    
     // MARK: - LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()

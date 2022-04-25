@@ -10,9 +10,7 @@ import CoreData
 import SnapKit
 
 class AddViewController: UIViewController {
-    
-    //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
-    
+        
     // MARK: - UI ELEMENTS
     let companyName: UITextField = UITextField()
     private let labelCompany: UILabel = UILabel()

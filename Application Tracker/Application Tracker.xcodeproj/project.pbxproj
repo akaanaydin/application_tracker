@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B90EF70828155ED000EC1BB6 /* Interview_Tracker_Core_Data_Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B90EF70628155ED000EC1BB6 /* Interview_Tracker_Core_Data_Model.xcdatamodeld */; };
-		B90EF70A28155F7500EC1BB6 /* CoreDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90EF70928155F7500EC1BB6 /* CoreDataViewModel.swift */; };
 		B92CD6D628145E4F001E111E /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92CD6D528145E4F001E111E /* AddViewController.swift */; };
 		B9B2E45D280E08FA00222F90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B2E45C280E08FA00222F90 /* AppDelegate.swift */; };
 		B9B2E45F280E08FA00222F90 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B2E45E280E08FA00222F90 /* SceneDelegate.swift */; };
@@ -23,7 +22,6 @@
 
 /* Begin PBXFileReference section */
 		B90EF70728155ED000EC1BB6 /* Interview_Tracker_Core_Data_Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Interview_Tracker_Core_Data_Model.xcdatamodel; sourceTree = "<group>"; };
-		B90EF70928155F7500EC1BB6 /* CoreDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataViewModel.swift; sourceTree = "<group>"; };
 		B92CD6D528145E4F001E111E /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		B9B2E459280E08FA00222F90 /* Application Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Application Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9B2E45C280E08FA00222F90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 		B9B2E472280E091B00222F90 /* View Model */ = {
 			isa = PBXGroup;
 			children = (
-				B90EF70928155F7500EC1BB6 /* CoreDataViewModel.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -219,7 +216,6 @@
 			files = (
 				B92CD6D628145E4F001E111E /* AddViewController.swift in Sources */,
 				B90EF70828155ED000EC1BB6 /* Interview_Tracker_Core_Data_Model.xcdatamodeld in Sources */,
-				B90EF70A28155F7500EC1BB6 /* CoreDataViewModel.swift in Sources */,
 				B9C92FD6281722CD00528E6E /* InterviewCell.swift in Sources */,
 				B9B2E461280E08FA00222F90 /* ViewController.swift in Sources */,
 				B9B2E45D280E08FA00222F90 /* AppDelegate.swift in Sources */,
