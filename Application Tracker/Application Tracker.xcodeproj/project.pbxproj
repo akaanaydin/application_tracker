@@ -18,6 +18,7 @@
 		B9B2E469280E08FA00222F90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9B2E467280E08FA00222F90 /* LaunchScreen.storyboard */; };
 		B9B2E476280E09BD00222F90 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B2E475280E09BD00222F90 /* MainViewController.swift */; };
 		B9B2E479280E0B5A00222F90 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B9B2E478280E0B5A00222F90 /* SnapKit */; };
+		B9C92FD6281722CD00528E6E /* InterviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C92FD5281722CD00528E6E /* InterviewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		B9B2E468280E08FA00222F90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B9B2E46A280E08FA00222F90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9B2E475280E09BD00222F90 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		B9C92FD5281722CD00528E6E /* InterviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 		B9B2E473280E094100222F90 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B9C92FD42817229100528E6E /* TableView Cell */,
 				B9B2E475280E09BD00222F90 /* MainViewController.swift */,
 				B92CD6D528145E4F001E111E /* AddViewController.swift */,
 			);
@@ -127,6 +130,14 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B9C92FD42817229100528E6E /* TableView Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B9C92FD5281722CD00528E6E /* InterviewCell.swift */,
+			);
+			path = "TableView Cell";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -209,6 +220,7 @@
 				B92CD6D628145E4F001E111E /* AddViewController.swift in Sources */,
 				B90EF70828155ED000EC1BB6 /* Interview_Tracker_Core_Data_Model.xcdatamodeld in Sources */,
 				B90EF70A28155F7500EC1BB6 /* CoreDataViewModel.swift in Sources */,
+				B9C92FD6281722CD00528E6E /* InterviewCell.swift in Sources */,
 				B9B2E461280E08FA00222F90 /* ViewController.swift in Sources */,
 				B9B2E45D280E08FA00222F90 /* AppDelegate.swift in Sources */,
 				B9B2E45F280E08FA00222F90 /* SceneDelegate.swift in Sources */,

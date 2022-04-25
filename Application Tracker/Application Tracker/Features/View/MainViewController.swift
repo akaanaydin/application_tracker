@@ -11,7 +11,7 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
-    // MARK: UI ELEMENTS
+    // MARK: - UI ELEMENTS
     private let interviewButton: UIButton = UIButton()
     private let rejectButton: UIButton = UIButton()
     private let addButton: UIButton = UIButton()
@@ -19,7 +19,7 @@ class MainViewController: UIViewController {
     private let label: UILabel = UILabel()
     let tableView: UITableView = UITableView()
     
-    // MARK: CORE DATA SAVE ARRAYS
+    // MARK: - CORE DATA SAVE ARRAYS
     var companyArray = [String]()
     var jobTitleArray = [String]()
     var locationArray = [String]()
@@ -28,22 +28,23 @@ class MainViewController: UIViewController {
     var notesArray = [String]()
     var idArray = [UUID]()
     
-    // MARK: REJECT COUNT
+    // MARK: - REJECT COUNT
     var rejectCountArray = [String]()
     var rejectCounter: Int = Int()
     
-    // MARK: VIEW CONTROLLERS
+    // MARK: - VIEW CONTROLLERS
     let addVC = AddViewController()
-   
+    
     
     //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
     
+    // MARK: - LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
     
-    // MARK: CONFIGURE FUNCTION
+    // MARK: - CONFIGURE FUNCTION
     func configure() {
         addSubviews()
         drawDesign()
@@ -56,7 +57,7 @@ class MainViewController: UIViewController {
         fetchDatas()
     }
     
-    // MARK: ADDSUBVIEW FUNCTION
+    // MARK: - ADDSUBVIEW FUNCTION
     func addSubviews() {
         view.addSubview(secondView)
         view.addSubview(label)
@@ -66,7 +67,7 @@ class MainViewController: UIViewController {
         view.addSubview(tableView)
     }
     
-    // MARK: DESIGN FUNCTION
+    // MARK: - DESIGN FUNCTION
     func drawDesign() {
         
         // View
@@ -115,12 +116,12 @@ class MainViewController: UIViewController {
         }
     }
     
-    // MARK: ADD BUTTON FUNCTION
+    // MARK: - ADD BUTTON FUNCTION
     @objc func addButtonClicked(sender: UIButton!) {
         present(addVC, animated: true, completion: nil)
     }
     
-    // MARK: CORE DATA FETCH DATAS    VIEW MODELE TASINACAK
+    // MARK: - CORE DATA FETCH DATAS    VIEW MODELE TASINACAK
     @objc func fetchDatas() {
         // DELETE DUPLICATE DATAS
         idArray.removeAll(keepingCapacity: true)
@@ -185,7 +186,7 @@ class MainViewController: UIViewController {
     }
 }
 
-// MARK: EXTENSIONS
+// MARK: - EXTENSIONS
 
 // MARK: SNAPKIT CONFIGURES
 extension MainViewController {
@@ -241,7 +242,7 @@ extension MainViewController {
     }
 }
 
-// MARK: VIEWWILLAPPEAR NOTIFICATION OBSERVER FOR CORE DATA
+// MARK: - VIEWWILLAPPEAR NOTIFICATION OBSERVER FOR CORE DATA
 
 extension MainViewController {
     override func viewWillAppear(_ animated: Bool) {
@@ -249,7 +250,7 @@ extension MainViewController {
     }
 }
 
-// MARK: TABLEVIEW DELEGATE, DATA SOURCE AND DELETE CELL EXTENSIONS
+// MARK: - TABLEVIEW DELEGATE, DATA SOURCE AND DELETE CELL EXTENSIONS
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     

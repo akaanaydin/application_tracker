@@ -11,9 +11,9 @@ import SnapKit
 
 class AddViewController: UIViewController {
     
-//    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
+    //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
     
-    // MARK: UI ELEMENTS
+    // MARK: - UI ELEMENTS
     let companyName: UITextField = UITextField()
     private let labelCompany: UILabel = UILabel()
     let jobTitle: UITextField = UITextField()
@@ -28,13 +28,13 @@ class AddViewController: UIViewController {
     private let labelInterviewDate: UILabel = UILabel()
     private let saveButton: UIButton = UIButton()
     
-    
+    // MARK: - LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
     
-    // MARK: CONFIGURE FUNCTION
+    // MARK: - CONFIGURE FUNCTION
     func configure() {
         drawDesign()
         addSubviews()
@@ -54,7 +54,7 @@ class AddViewController: UIViewController {
         makeLabelNotes()
     }
     
-    // MARK: DESIGN FUNCTION
+    // MARK: - DESIGN FUNCTION
     func drawDesign() {
         
         // View
@@ -102,7 +102,7 @@ class AddViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveButtonClicked), for: .touchUpInside)
     }
     
-    // MARK: ADDSUBVIEW FUNCTION
+    // MARK: - ADDSUBVIEW FUNCTION
     func addSubviews() {
         view.addSubview(companyName)
         view.addSubview(labelCompany)
@@ -119,35 +119,35 @@ class AddViewController: UIViewController {
         view.addSubview(saveButton)
     }
     
-    // MARK: KEYBOARD DISMISS FUNCTION FOR TOUCH ANYWHERE
+    // MARK: - KEYBOARD DISMISS FUNCTION FOR TOUCH ANYWHERE
     func keyboardDismiss() {
         let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
         view.addGestureRecognizer(tapGesture)
     }
     
-    // MARK: SAVE BUTTON FUNCTION
+    // MARK: - SAVE BUTTON FUNCTION
     @objc func saveButtonClicked(sender: UIButton) {
         
-              // MARK: CORE DATA SAVE DATAS
-              let appDelegate = UIApplication.shared.delegate as! AppDelegate
-              let context = appDelegate.persistentContainer.viewContext
-              let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
-              
-              // MARK: SAVE DATAS ACCORDING TO FORKEYS
-              saveData.setValue(UUID(), forKey: "id")
-              saveData.setValue(companyName.text!, forKey: "companyName")
-              saveData.setValue(jobTitle.text!, forKey: "jobTitle")
-              saveData.setValue(location.text!, forKey: "location")
-              saveData.setValue(jobType.text!, forKey: "jobType")
-              saveData.setValue(notes.text!, forKey: "notes")
-              saveData.setValue(interviewDate.date, forKey: "date")
+        // MARK: CORE DATA SAVE DATAS
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
         
-              do {
-                  try context.save()
-                  print("Success")
-              }catch {
-                  print(error)
-              }
+        // MARK: SAVE DATAS ACCORDING TO FORKEYS
+        saveData.setValue(UUID(), forKey: "id")
+        saveData.setValue(companyName.text!, forKey: "companyName")
+        saveData.setValue(jobTitle.text!, forKey: "jobTitle")
+        saveData.setValue(location.text!, forKey: "location")
+        saveData.setValue(jobType.text!, forKey: "jobType")
+        saveData.setValue(notes.text!, forKey: "notes")
+        saveData.setValue(interviewDate.date, forKey: "date")
+        
+        do {
+            try context.save()
+            print("Success")
+        }catch {
+            print(error)
+        }
         
         // MARK: NOTIFICATION SEND FOR OBSERVER AFTER SAVE DATAS
         NotificationCenter.default.post(name: .init(rawValue: "NewData"), object: nil)
@@ -162,10 +162,10 @@ class AddViewController: UIViewController {
         // MARK: DISMISS VIEW AFTER CLICKED BUTTON
         self.dismiss(animated: true, completion: nil)
     }
-
+    
 }
 
-// MARK : EXTENSIONS
+// MARK: - EXTENSIONS
 
 // MARK: SNAPKIT CONFIGURES
 extension AddViewController {
