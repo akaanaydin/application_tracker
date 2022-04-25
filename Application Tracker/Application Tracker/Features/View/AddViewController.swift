@@ -12,6 +12,8 @@ import SnapKit
 class AddViewController: UIViewController {
     
 //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
+    
+    // MARK: UI ELEMENTS
     let companyName: UITextField = UITextField()
     private let labelCompany: UILabel = UILabel()
     let jobTitle: UITextField = UITextField()
@@ -25,18 +27,18 @@ class AddViewController: UIViewController {
     let interviewDate: UIDatePicker = UIDatePicker()
     private let labelInterviewDate: UILabel = UILabel()
     private let saveButton: UIButton = UIButton()
-    var interviewCounter: Int = Int()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
-        view.addGestureRecognizer(tapGesture)
     }
     
+    // MARK: CONFIGURE FUNCTION
     func configure() {
         drawDesign()
         addSubviews()
+        keyboardDismiss()
         makeSaveButton()
         makeLabelCompany()
         makeCompanyName()
@@ -52,30 +54,47 @@ class AddViewController: UIViewController {
         makeLabelNotes()
     }
     
+    // MARK: DESIGN FUNCTION
     func drawDesign() {
+        
+        // View
         view.backgroundColor = .white
+        
+        // Company
         labelCompany.text = "Company"
         labelCompany.font = .boldSystemFont(ofSize: 25)
-        labelJobTitle.text = "Job Title"
-        labelJobTitle.font = .boldSystemFont(ofSize: 25)
-        labelJobType.text = "Job Type"
-        labelJobType.font = .boldSystemFont(ofSize: 25)
-        labelLocation.text = "Location"
-        labelLocation.font = .boldSystemFont(ofSize: 25)
-        labelInterviewDate.text = "Interview Date"
-        labelInterviewDate.font = .boldSystemFont(ofSize: 25)
-        labelNotes.text = "Notes"
-        labelNotes.font = .boldSystemFont(ofSize: 25)
         companyName.borderStyle = .roundedRect
         companyName.placeholder = "Company Name"
+        
+        //  Job Title
+        labelJobTitle.text = "Job Title"
+        labelJobTitle.font = .boldSystemFont(ofSize: 25)
         jobTitle.borderStyle = .roundedRect
         jobTitle.placeholder = "Job Title"
-        location.borderStyle = .roundedRect
-        location.placeholder = "Location"
+        
+        // Job Type
+        labelJobType.text = "Job Type"
+        labelJobType.font = .boldSystemFont(ofSize: 25)
         jobType.borderStyle = .roundedRect
         jobType.placeholder = "Job Type"
+        
+        // Location
+        labelLocation.text = "Location"
+        labelLocation.font = .boldSystemFont(ofSize: 25)
+        location.borderStyle = .roundedRect
+        location.placeholder = "Location"
+        
+        // Intervıew Date
+        labelInterviewDate.text = "Interview Date"
+        labelInterviewDate.font = .boldSystemFont(ofSize: 25)
+        
+        // Notes
+        labelNotes.text = "Notes"
+        labelNotes.font = .boldSystemFont(ofSize: 25)
         notes.font = .boldSystemFont(ofSize: 20)
         notes.layer.borderWidth = 1
+        
+        // Save Button
         saveButton.layer.cornerRadius = 30
         saveButton.backgroundColor = .systemBlue
         saveButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
@@ -83,6 +102,7 @@ class AddViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(saveButtonClicked), for: .touchUpInside)
     }
     
+    // MARK: ADDSUBVIEW FUNCTION
     func addSubviews() {
         view.addSubview(companyName)
         view.addSubview(labelCompany)
@@ -99,40 +119,55 @@ class AddViewController: UIViewController {
         view.addSubview(saveButton)
     }
     
+    // MARK: KEYBOARD DISMISS FUNCTION FOR TOUCH ANYWHERE
+    func keyboardDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    // MARK: SAVE BUTTON FUNCTION
     @objc func saveButtonClicked(sender: UIButton) {
-//        VIEW MODELE TASINACAK
+        
+              // MARK: CORE DATA SAVE DATAS
               let appDelegate = UIApplication.shared.delegate as! AppDelegate
               let context = appDelegate.persistentContainer.viewContext
               let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
               
+              // MARK: SAVE DATAS ACCORDING TO FORKEYS
+              saveData.setValue(UUID(), forKey: "id")
+              saveData.setValue(companyName.text!, forKey: "companyName")
+              saveData.setValue(jobTitle.text!, forKey: "jobTitle")
+              saveData.setValue(location.text!, forKey: "location")
+              saveData.setValue(jobType.text!, forKey: "jobType")
+              saveData.setValue(notes.text!, forKey: "notes")
+              saveData.setValue(interviewDate.date, forKey: "date")
         
-                saveData.setValue(UUID(), forKey: "id")
-                saveData.setValue(companyName.text!, forKey: "companyName")
-                saveData.setValue(jobTitle.text!, forKey: "jobTitle")
-                saveData.setValue(location.text!, forKey: "location")
-                saveData.setValue(jobType.text!, forKey: "jobType")
-                saveData.setValue(notes.text!, forKey: "notes")
-                saveData.setValue(interviewDate.date, forKey: "date")
-        
-            
               do {
                   try context.save()
                   print("Success")
               }catch {
                   print(error)
               }
-//
+        
+        // MARK: NOTIFICATION SEND FOR OBSERVER AFTER SAVE DATAS
         NotificationCenter.default.post(name: .init(rawValue: "NewData"), object: nil)
+        
+        // MARK: DELETE TEXT FIELDS AFTER SAVE DATAS
         companyName.text = ""
         jobTitle.text = ""
         location.text = ""
         jobType.text = ""
         notes.text = ""
+        
+        // MARK: DISMISS VIEW AFTER CLICKED BUTTON
         self.dismiss(animated: true, completion: nil)
     }
 
 }
 
+// MARK : EXTENSIONS
+
+// MARK: SNAPKIT CONFIGURES
 extension AddViewController {
     
     private func makeSaveButton() {
