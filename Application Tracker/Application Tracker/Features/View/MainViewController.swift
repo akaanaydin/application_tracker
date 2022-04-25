@@ -11,12 +11,15 @@ import SnapKit
 
 class MainViewController: UIViewController {
     
+    // MARK: UI ELEMENTS
     private let interviewButton: UIButton = UIButton()
     private let rejectButton: UIButton = UIButton()
     private let addButton: UIButton = UIButton()
     private let secondView: UIView = UIView()
     private let label: UILabel = UILabel()
     let tableView: UITableView = UITableView()
+    
+    // MARK: CORE DATA SAVE ARRAYS
     var companyArray = [String]()
     var jobTitleArray = [String]()
     var locationArray = [String]()
@@ -24,11 +27,14 @@ class MainViewController: UIViewController {
     var dateArray = [Date]()
     var notesArray = [String]()
     var idArray = [UUID]()
-    var interviewCountArray = [String]()
+    
+    // MARK: REJECT COUNT
     var rejectCountArray = [String]()
-    let addVC = AddViewController()
-    var interviewCounter: Int = Int()
     var rejectCounter: Int = Int()
+    
+    // MARK: VIEW CONTROLLERS
+    let addVC = AddViewController()
+   
     
     //    lazy var viewModel: IInterviewTrackerViewModel = InterviewTrackerViewModel()
     
@@ -37,6 +43,7 @@ class MainViewController: UIViewController {
         configure()
     }
     
+    // MARK: CONFIGURE FUNCTION
     func configure() {
         addSubviews()
         drawDesign()
@@ -49,6 +56,7 @@ class MainViewController: UIViewController {
         fetchDatas()
     }
     
+    // MARK: ADDSUBVIEW FUNCTION
     func addSubviews() {
         view.addSubview(secondView)
         view.addSubview(label)
@@ -58,41 +66,61 @@ class MainViewController: UIViewController {
         view.addSubview(tableView)
     }
     
+    // MARK: DESIGN FUNCTION
     func drawDesign() {
+        
+        // View
         view.backgroundColor = .systemGray6
+        
+        //SecondView
         secondView.backgroundColor = .systemGray5
         secondView.layer.cornerRadius = 30
+        
+        //TableView
         tableView.backgroundColor = .systemGray5
         tableView.separatorColor = .systemGray5
         tableView.reloadData()
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Title Label
         label.text = "Interview Tracker"
         label.font = .systemFont(ofSize: 40)
+        
+        // Interview Button (Green)
         interviewButton.backgroundColor = .systemGreen
         interviewButton.layer.cornerRadius = 20
         interviewButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 55)
+        
+        // Reject Button (Red)
         rejectButton.backgroundColor = .systemRed
         rejectButton.layer.cornerRadius = 20
         rejectButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 55)
+        
+        // Add Button
         addButton.layer.cornerRadius = 30
         addButton.backgroundColor = .systemBlue
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addButton.tintColor = .white
         addButton.addTarget(self, action: #selector(addButtonClicked), for: .touchUpInside)
+        
+        // Interview Button Title
         if idArray.isEmpty {
             interviewButton.setTitle("0", for: .normal)
         }
+        
+        // Reject Button Title
         if rejectCountArray.isEmpty {
             rejectButton.setTitle("0", for: .normal)
         }
     }
     
+    // MARK: ADD BUTTON FUNCTION
     @objc func addButtonClicked(sender: UIButton!) {
         present(addVC, animated: true, completion: nil)
     }
     
-    //    VIEW MODELE TASINACAK
+    // CORE DATA FETCH DATAS    VIEW MODELE TASINACAK
     @objc func fetchDatas() {
         idArray.removeAll(keepingCapacity: true)
         companyArray.removeAll(keepingCapacity: true)
@@ -158,7 +186,9 @@ class MainViewController: UIViewController {
     
 }
 
+// MARK: EXTENSIONS
 
+// MARK: SNAPKIT CONFIGURES
 extension MainViewController {
     private func makeInterviewButton() {
         interviewButton.snp.makeConstraints { make in
@@ -212,22 +242,18 @@ extension MainViewController {
     }
 }
 
-// Useless
+// MARK: VIEWWILLAPPEAR NOTIFICATION OBSERVER FOR CORE DATA
+
 extension MainViewController {
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(fetchDatas), name: NSNotification.Name("NewData"), object: nil)
-        print(companyArray)
-        print(idArray)
-        print(jobTypeArray)
-        print(jobTitleArray)
-        print(locationArray)
-        print(dateArray)
-        print(notesArray)
-        
     }
 }
 
+// MARK: TABLEVIEW DELEGATE, DATA SOURCE AND DELETE CELL EXTENSIONS
+
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return idArray.count
     }
@@ -239,19 +265,23 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    //    VIEW MODELE TASINACAK
+    // MARK: TABLEVIEW DELETE CELL   VIEW MODELE TASINACAK
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
+        
+        // THE NUMBER OF REJECTIONS INCREASES BY ONE AFTER DELETE CELL AND SAVE CORE DATA
         let saveData = NSEntityDescription.insertNewObject(forEntityName: "AddJob", into: context)
+        saveData.setValue("1", forKey: "rejectCounter")
+        
+        // FETCH DATA FROM CORE DATA AND FILTER WITH ID
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AddJob")
         let idString = idArray[indexPath.row].uuidString
         fetchRequest.predicate = NSPredicate(format: "id = %@", idString)
         fetchRequest.returnsObjectsAsFaults = false
         
-        saveData.setValue("1", forKey: "rejectCounter")
-        
+        // DATA FILTERED ACCORDING TO ID DELETED
         do {
             let results = try context.fetch(fetchRequest)
             for result in results as! [NSManagedObject] {
